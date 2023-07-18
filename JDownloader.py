@@ -13,6 +13,8 @@ def gui():
         def download_mp4():
             progress_bar['value'] = 0
             progress_bar.pack()
+            progress_lbl.pack()
+            progress_lbl.config(text='0%')
             try:
                 link = ytEntry.get()
                 yt = pytube.YouTube(link)
@@ -34,6 +36,7 @@ def gui():
                                 file.write(chunk)
                                 downloaded_size += len(chunk)
                                 progress = int((downloaded_size / total_size) * 100)
+                                progress_lbl.config(text=str(progress) + '%')
                                 progress_bar['value'] = progress
                                 window.update_idletasks()
                     error_label.config(text='Downloaded MP4!', fg='green')
@@ -46,6 +49,7 @@ def gui():
             except Exception as e:
                 error_label.config(text=f'Error: {str(e)}', fg='red')
             progress_bar.pack_forget()
+            progress_lbl.pack_forget()
         mp4_thread = threading.Thread(target=download_mp4)
         mp4_thread.start()
 
@@ -57,6 +61,8 @@ def gui():
         def download_mp3():
             progress_bar['value'] = 0
             progress_bar.pack()
+            progress_lbl.pack()
+            progress_lbl.config(text='0%')
             try:
                 link = ytEntry.get()
                 yt = pytube.YouTube(link)
@@ -80,6 +86,7 @@ def gui():
                                 file.write(chunk)
                                 downloaded_size += len(chunk)
                                 progress = int((downloaded_size / total_size) * 100)
+                                progress_lbl.config(text=str(progress) + '%')
                                 progress_bar['value'] = progress
                                 window.update_idletasks()
                 error_label.config(text='Downloaded MP3!', fg='green')
@@ -88,6 +95,7 @@ def gui():
             except Exception as e:
                 error_label.config(text=f'Error: {str(e)}', fg='red')
             progress_bar.pack_forget()
+            progress_lbl.pack_forget()
         mp3_thread = threading.Thread(target=download_mp3)
         mp3_thread.start()
 
@@ -152,6 +160,7 @@ def gui():
     error_label = tk.Label(frame2, font=('Arial', 14), fg='red', bg='#292929')
     error_label.pack()
     progress_bar = ttk.Progressbar(frame2, mode='determinate')
+    progress_lbl = tk.Label(frame2, font=('Arial', 14), bg='#292929', fg='white')
     frame2.pack()
 
     mp4_button = tk.Button(window, text="Download MP4", font=('Arial', 16), command=get_mp4, bd=2, relief='groove')
